@@ -34,7 +34,7 @@ class ResendVerificationEmailFormTest extends Unit
 
         expect($model->validate())->false();
         expect($model->hasErrors())->true();
-        expect($model->getFirstError('email'))->equals('There is no user with this email address.');
+        expect($model->getFirstError('email'))->equals('There is no inactive user with this email address.');
     }
 
     public function testEmptyEmailAddress()
@@ -58,7 +58,7 @@ class ResendVerificationEmailFormTest extends Unit
 
         expect($model->validate())->false();
         expect($model->hasErrors())->true();
-        expect($model->getFirstError('email'))->equals('There is no user with this email address.');
+        expect($model->getFirstError('email'))->equals('There is no inactive user with this email address.');
     }
 
     public function testSuccessfullyResend()

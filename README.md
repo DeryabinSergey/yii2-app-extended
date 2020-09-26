@@ -1,60 +1,27 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 Advanced Project Template</h1>
-    <br>
-</p>
+<h1 align="center">Yii 2 Extended Project Template</h1>
 
-Yii 2 Advanced Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-developing complex Web applications with multiple tiers.
+This Project Template based on Advanced Template with some modifications
 
-The template includes three tiers: front end, back end, and console, each of which
-is a separate Yii application.
+- add [rmrevin / yii2-fontawesome](https://github.com/rmrevin/yii2-fontawesome) Asset Bundle with Font Awesome 5
+- add [yiisoft / yii2-bootstrap4](https://github.com/yiisoft/yii2-bootstrap4) Bootstrap 4 Extension
+- add [Bootstrap 4 Dasboard Template](https://getbootstrap.com/docs/4.5/examples/dashboard/) to backend
+- add `ActionColumn` implementation for Bootstrap 4 icons
+- remove unique key from `user.username`. Authorization by email and password.
+- add simple permissions - User property `admin`. Only Admin has access to backend. For most powerfull - use RBAC.
+- add User CRUD to backend
+- make codeception tests valid, using [yii2-bootstrap4](https://github.com/yiisoft/yii2-bootstrap4)
+- add some tests to backend / create user
+- add selenium to `docker-compose.yml` and docker config at `frontend/tests/acceptance.suite.yml.example`
+- change php to `yiisoftware/yii2-php:7.4-apache` in `Dockerfile`
+- add config to `Dockerfile` for pretty URL
+- add `urlManagerFrontend` to backend config for making links from backend to frontend
 
-The template is designed to work in a team development environment. It supports
-deploying the application in different environments.
-
-Documentation is at [docs/guide/README.md](docs/guide/README.md).
-
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Build Status](https://travis-ci.com/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.com/yiisoft/yii2-app-advanced)
-
-DIRECTORY STRUCTURE
--------------------
-
+**Be careful** in `environments/dev/frontend/web/index-test.php` removed code to start test on Docker: 
 ```
-common
-    config/              contains shared configurations
-    mail/                contains view files for e-mails
-    models/              contains model classes used in both backend and frontend
-    tests/               contains tests for common classes    
-console
-    config/              contains console configurations
-    controllers/         contains console controllers (commands)
-    migrations/          contains database migrations
-    models/              contains console-specific model classes
-    runtime/             contains files generated during runtime
-backend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains backend configurations
-    controllers/         contains Web controller classes
-    models/              contains backend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for backend application    
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-frontend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains frontend configurations
-    controllers/         contains Web controller classes
-    models/              contains frontend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for frontend application
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    widgets/             contains frontend widgets
-vendor/                  contains dependent 3rd-party packages
-environments/            contains environment-based overrides
+// NOTE: Make sure this file is not accessible when deployed to production
+if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+    die('You are not allowed to access this file.');
+}
 ```
+
+All information and documentation is at [Advanced Project Template](https://github.com/yiisoft/yii2-app-advanced/blob/master/docs/guide/README.md).

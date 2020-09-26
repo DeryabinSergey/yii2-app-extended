@@ -21,24 +21,63 @@ class LoginCest
     {
         return [
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'login_data.php'
             ]
         ];
     }
+
+	public function _before(FunctionalTester $I)
+	{
+		$I->amOnRoute('site/login');
+	}
+
+	protected function formParams($email, $password)
+	{
+		return [
+			'LoginForm[email]' => $email,
+			'LoginForm[password]' => $password,
+		];
+	}
+
+	public function checkEmpty(FunctionalTester $I)
+	{
+		$I->submitForm('#login-form', $this->formParams('', ''));
+		$I->seeValidationError('Email cannot be blank.');
+		$I->seeValidationError('Password cannot be blank.');
+	}
+
+	public function checkWrongPassword(FunctionalTester $I)
+	{
+		$I->submitForm('#login-form', $this->formParams('admin@example.com', 'wrong'));
+		$I->seeValidationError('Incorrect username or password.');
+	}
+
+	public function checkInactiveAccount(FunctionalTester $I)
+	{
+		$I->submitForm('#login-form', $this->formParams('test@mail.com', 'Test1234'));
+		$I->seeValidationError('Incorrect username or password');
+	}
     
     /**
      * @param FunctionalTester $I
      */
     public function loginUser(FunctionalTester $I)
     {
-        $I->amOnPage('/site/login');
-        $I->fillField('Username', 'erau');
-        $I->fillField('Password', 'password_0');
-        $I->click('login-button');
+	    $I->submitForm('#login-form', $this->formParams('sfriesen@jenkins.info', 'password_0'));
 
         $I->see('Logout (erau)', 'form button[type=submit]');
         $I->dontSeeLink('Login');
-        $I->dontSeeLink('Signup');
     }
+
+	/**
+	 * @param FunctionalTester $I
+	 */
+	public function denyNotAdminUser(FunctionalTester $I)
+	{
+		$I->submitForm('#login-form', $this->formParams('sfriesen2@jenkins.info', 'password_0'));
+
+		$I->see('Login for admin only, sorry bro', 'form div.invalid-feedback');
+		$I->see('Login', 'form button[type=submit]');
+	}
 }

@@ -21,12 +21,13 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property bool $admin
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    const STATUS_DELETED    = 0;
+    const STATUS_INACTIVE   = 9;
+    const STATUS_ACTIVE     = 10;
 
 
     /**
@@ -37,13 +38,26 @@ class User extends ActiveRecord implements IdentityInterface
         return '{{%user}}';
     }
 
+	/**
+	 * Return available user statuses
+	 * @return array
+	 */
+    public static function statusList(): array
+    {
+    	return [
+    		self::STATUS_DELETED    => 'deleted',
+		    self::STATUS_INACTIVE   => 'inactive',
+		    self::STATUS_ACTIVE     => 'active'
+	    ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::class,
         ];
     }
 
@@ -53,8 +67,16 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+	        ['email', 'trim'],
+	        ['email', 'email'],
+	        ['email', 'required'],
+	        ['email', 'string', 'max' => 255],
+	        ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => array_keys(self::statusList())],
+
+	        ['admin', 'boolean'],
         ];
     }
 
@@ -84,6 +106,17 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
+
+	/**
+	 * Finds user by email
+	 *
+	 * @param string $email
+	 * @return static|null
+	 */
+	public static function findByEmail($email)
+	{
+		return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+	}
 
     /**
      * Finds user by password reset token

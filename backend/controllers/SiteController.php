@@ -2,55 +2,45 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\web\Controller;
+use yii\helpers\ArrayHelper;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
+use backend\models\LoginForm;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BackendController
 {
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
+	    return
+		    ArrayHelper::merge(
+			    [
+		            'access' => [
+		                'rules' => [
+		                    [
+		                        'actions' => ['login', 'error'],
+		                        'allow' => true,
+		                    ],
+		                    [
+		                        'actions' => ['logout'],
+		                        'allow' => true,
+		                        'roles' => ['@'],
+		                    ]
+		                ],
+		            ],
+		            'verbs' => [
+		                'class' => VerbFilter::class,
+		                'actions' => [
+		                    'logout' => ['post'],
+		                ],
+		            ],
+		        ],
+			    parent::behaviors()
+		    );
     }
 
     /**

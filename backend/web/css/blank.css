@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    padding: 40px 0;
+}
+
+.wrap {
+    display: flex;
+    height: auto;
+    min-height: 100%;
+    width: 100%;
+    max-width: 500px;
+    margin: -40px auto;
+    padding: 15px;
+    align-items: center;
+}
+
+body .wrap > div {
+    width: 100%;
+}
