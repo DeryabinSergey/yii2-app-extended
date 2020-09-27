@@ -2,6 +2,7 @@
 
 return [
 	[
+		'id' => 1,
 		'username' => 'bayer.hudson',
 		'auth_key' => 'HP187Mvq7Mmm3CTU80dLkGmni_FUH_lR',
 		//password_0
@@ -13,6 +14,7 @@ return [
 		'email' => 'nicole.paucek@schultz.info',
 	],
 	[
+		'id' => 2,
 		'username' => 'erau 2',
 		'auth_key' => 'tUu1qHcde0diwUol3xeI-18MuHkkprQI',
 		// password_0

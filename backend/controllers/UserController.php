@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\UserCreateForm;
+use backend\models\UserUpdateForm;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -89,7 +90,7 @@ class UserController extends BackendController
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, UserUpdateForm::class);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -142,12 +143,13 @@ class UserController extends BackendController
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
+     * @param string $object
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id, $object = \common\models\User::class)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = $object::findOne($id)) !== null) {
             return $model;
         }
 
