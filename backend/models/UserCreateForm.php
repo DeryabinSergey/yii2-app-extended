@@ -28,7 +28,7 @@ class UserCreateForm extends Model
             ['email', 'trim'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => \common\models\User::class, 'message' => 'This email address has already been taken.'],
 
 	        [['username', 'email'], 'required'],
 

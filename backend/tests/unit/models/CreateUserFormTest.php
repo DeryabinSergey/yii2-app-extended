@@ -24,12 +24,6 @@ class CreateUserFormTest extends \Codeception\Test\Unit
         ]);
     }
 
-    // пустые поля формы
-	// email не валидный
-	// создание дублирующегося email
-	// создание админа
-	// создание не админа
-
 	public function testCreateBlankForm()
 	{
 		$model = new UserCreateForm([
