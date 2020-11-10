@@ -9,7 +9,8 @@
         "issues": "https://github.com/DeryabinSergey/yii2-app-extended/issues?state=open",
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "http://www.yiiframework.com/wiki/",
-        "source": "https://github.com/DeryabinSergey/yii2-app-extended"
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
     "require": {
