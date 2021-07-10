@@ -20,5 +20,6 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
 	    'yii\bootstrap4\BootstrapPluginAsset',
 	    'rmrevin\yii\fontawesome\NpmFreeAssetBundle',
+        'yii\bootstrap4\BootstrapAsset',
     ];
 }
