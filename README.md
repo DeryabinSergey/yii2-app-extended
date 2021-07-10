@@ -3,7 +3,6 @@
 This Project Template based on Advanced Template with some modifications
 
 - add [rmrevin / yii2-fontawesome](https://github.com/rmrevin/yii2-fontawesome) Asset Bundle with Font Awesome 5
-- add [yiisoft / yii2-bootstrap4](https://github.com/yiisoft/yii2-bootstrap4) Bootstrap 4 Extension
 - add [Bootstrap 4 Dasboard Template](https://getbootstrap.com/docs/4.5/examples/dashboard/) to backend
 - add `ActionColumn` implementation for Bootstrap 4 icons
 - remove unique key from `user.username`. Authorization by email and password.
