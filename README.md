@@ -1,5 +1,12 @@
 <h1 align="center">Yii 2 Extended Project Template</h1>
 
+
+### Install via composer 
+
+```shell
+composer create-project --prefer-dist deryabinsergey/yii2-app-extended
+```
+
 This Project Template based on Advanced Template with some modifications
 
 - add [rmrevin / yii2-fontawesome](https://github.com/rmrevin/yii2-fontawesome) Asset Bundle with Font Awesome 5
