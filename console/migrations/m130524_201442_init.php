@@ -18,7 +18,7 @@ class m130524_201442_init extends Migration
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
-            'email' => $this->string()->notNull()->unique(),
+            'email' => $this->string()->notNull(),
 
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'created_at' => $this->integer()->notNull(),
@@ -27,6 +27,8 @@ class m130524_201442_init extends Migration
 	        'admin' => $this->boolean()->notNull()->defaultValue(false),
 	        'verification_token' => $this->string()->defaultValue(null)
         ], $tableOptions);
+
+        $this->createIndex('idx_user_email', '{{%user}}', 'email', false);
     }
 
     public function down()

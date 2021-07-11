@@ -25,7 +25,7 @@ class SignupForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => User::class, 'message' => 'This email address has already been taken.', 'filter' => ['!=', 'status', User::STATUS_DELETED]],
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
@@ -40,7 +40,7 @@ class SignupForm extends Model
     public function signup()
     {
         if (!$this->validate()) {
-            return null;
+            return false;
         }
         
         $user = new User();

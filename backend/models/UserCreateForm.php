@@ -28,7 +28,7 @@ class UserCreateForm extends Model
             ['email', 'trim'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => \common\models\User::class, 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => User::class, 'message' => 'This email address has already been taken.', 'filter' => ['!=', 'status', User::STATUS_DELETED]],
 
 	        [['username', 'email'], 'required'],
 
@@ -44,7 +44,7 @@ class UserCreateForm extends Model
     public function create()
     {
         if (!$this->validate()) {
-            return null;
+            return false;
         }
         
         $user = new User();
