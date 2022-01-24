@@ -4,8 +4,8 @@ use yii\bootstrap4\Html;
 use yii\widgets\DetailView;
 use common\models\User;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var yii\web\View $this */
+/* @var common\models\User $model */
 
 $this->title =  $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];

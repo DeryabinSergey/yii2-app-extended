@@ -6,9 +6,9 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use common\models\User;
 
-/* @var $this yii\web\View */
-/* @var $searchModel backend\models\UserSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var yii\web\View $this */
+/* @var backend\models\UserSearch $searchModel */
+/* @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
