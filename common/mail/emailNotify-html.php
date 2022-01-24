@@ -1,9 +1,9 @@
 <?php
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 
-/* @var $this yii\web\View */
-/* @var $user common\models\User */
-/* @var $password string */
+/* @var yii\web\View $this */
+/* @var common\models\User $user */
+/* @var string $password */
 
 $link = Yii::$app->urlManagerFrontend->createUrl(['/']);
 ?>

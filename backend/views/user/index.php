@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Url;
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use common\models\User;

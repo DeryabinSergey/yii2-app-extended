@@ -1,10 +1,10 @@
 <?php
 
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 
-/* @var $this \yii\web\View view component instance */
-/* @var $message \yii\mail\MessageInterface the message being composed */
-/* @var $content string main view render result */
+/* @var \yii\web\View $this view component instance */
+/* @var \yii\mail\MessageInterface $message the message being composed */
+/* @var string $content main view render result */
 
 ?>
 <?php $this->beginPage() ?>

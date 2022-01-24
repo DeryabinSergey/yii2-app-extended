@@ -6,9 +6,9 @@
 use backend\assets\AppAsset;
 use common\widgets\Alert;
 use rmrevin\yii\fontawesome\FAS;
-use yii\bootstrap4\Breadcrumbs;
-use yii\bootstrap4\Html;
-use yii\bootstrap4\Nav;
+use yii\bootstrap5\Breadcrumbs;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\Nav;
 
 AppAsset::register($this);
 ?>
@@ -27,7 +27,7 @@ AppAsset::register($this);
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="<?=Yii::$app->homeUrl?>"><?=Yii::$app->name?></a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -42,7 +42,7 @@ AppAsset::register($this);
 </nav>
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row justify-content-end">
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky pt-3">
                 <?php
