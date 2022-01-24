@@ -1,10 +1,10 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
+/* @var \yii\web\View $this */
+/* @var string $content */
 
 use backend\assets\AppAsset;
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 
 AppAsset::register($this)->css = ['css/blank.css'];
 ?>

@@ -3,11 +3,10 @@
 namespace common\flow\grid;
 
 use Yii;
-use yii\bootstrap4\Html;
-use yii\helpers\Url;
+use yii\bootstrap5\Html;
 
 /**
- * ActionColumn for bootstrap 4 icons
+ * ActionColumn for bootstrap 5 icons
  *
  * @inheritdoc
  * @author Qiang Xue <qiang.xue@gmail.com>

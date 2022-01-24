@@ -1,8 +1,8 @@
 <?php
 
-/* @var $this yii\web\View */
+/* @var yii\web\View $this */
 
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 
 $this->title = 'About';
 $this->params['breadcrumbs'][] = $this->title;

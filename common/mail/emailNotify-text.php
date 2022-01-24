@@ -1,8 +1,8 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $user common\models\User */
-/* @var $password string */
+/* @var yii\web\View $this */
+/* @var common\models\User $user */
+/* @var string $password */
 
 $link = Yii::$app->urlManagerFrontend->createUrl(['/']);
 ?>

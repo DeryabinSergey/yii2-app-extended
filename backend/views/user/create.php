@@ -1,11 +1,11 @@
 <?php
 
-use yii\bootstrap4\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\UserCreateForm */
-/* @var $form yii\bootstrap4\ActiveForm */
+/* @var yii\web\View $this */
+/* @var backend\models\UserCreateForm $model */
+/* @var yii\bootstrap5\ActiveForm $form */
 
 $this->title = 'Create User';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];

@@ -1,14 +1,14 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
+/* @var \yii\web\View $this */
+/* @var string $content */
 
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use yii\bootstrap4\Breadcrumbs;
-use yii\bootstrap4\Html;
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
+use yii\bootstrap5\Breadcrumbs;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\Nav;
+use yii\bootstrap5\NavBar;
 
 AppAsset::register($this);
 ?>
@@ -22,7 +22,7 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100 pt-5">
+<body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
 <header>
@@ -60,7 +60,7 @@ AppAsset::register($this);
     ?>
 </header>
 
-<main role="main" class="flex-shrink-0 pt-4">
+<main role="main" class="flex-shrink-0">
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
@@ -71,9 +71,11 @@ AppAsset::register($this);
 </main>
 
 <footer class="footer mt-auto py-3 text-muted">
-    <div class="container">
-        <p class="float-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="float-right"><?= Yii::powered() ?></p>
+    <div class="container justify-content-between">
+        <div class="row row-cols-1 row-cols-sm-2">
+            <div class="col">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></div>
+            <div class="col text-sm-end"><?= Yii::powered() ?></div>
+        </div>
     </div>
 </footer>
 
