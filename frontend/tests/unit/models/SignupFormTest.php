@@ -31,7 +31,7 @@ class SignupFormTest extends \Codeception\Test\Unit
         ]);
 
         $user = $model->signup();
-        expect($user)->true();
+        verify($user)->notEmpty();
 
         $this->checkSignupEmail(
             /** @var \common\models\User $user */
@@ -41,6 +41,16 @@ class SignupFormTest extends \Codeception\Test\Unit
                 'status' => \common\models\User::STATUS_INACTIVE
             ])
         );
+
+        $this->tester->seeEmailIsSent();
+
+        $mail = $this->tester->grabLastSentEmail();
+
+        verify($mail)->instanceOf('yii\mail\MessageInterface');
+        verify($mail->getTo())->arrayHasKey('some_email@example.com');
+        verify($mail->getFrom())->arrayHasKey(\Yii::$app->params['supportEmail']);
+        verify($mail->getSubject())->equals('Account registration at ' . \Yii::$app->name);
+        verify($mail->toString())->stringContainsString($user->verification_token);
     }
 
     public function testCorrectSignupWithDeletedBeforeEmail()
@@ -66,14 +76,18 @@ class SignupFormTest extends \Codeception\Test\Unit
     public function testNotCorrectSignup()
     {
         $model = new SignupForm([
-            'email' => 'test2@mail.com',
-            'password' => 'Test1234',
+            'username' => 'troy.becker',
+            'email' => 'nicolas.dianna@hotmail.com',
+            'password' => 'some_password',
         ]);
 
-        expect_not($model->signup());
-        expect_that($model->getErrors('email'));
+        verify($model->signup())->empty();
+        verify($model->getErrors('username'))->notEmpty();
+        verify($model->getErrors('email'))->notEmpty();
 
-        expect($model->getFirstError('email'))
+        verify($model->getFirstError('username'))
+            ->equals('This username has already been taken.');
+        verify($model->getFirstError('email'))
             ->equals('This email address has already been taken.');
     }
 
