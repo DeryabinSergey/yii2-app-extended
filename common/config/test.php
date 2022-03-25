@@ -4,8 +4,11 @@ return [
     'basePath' => dirname(__DIR__),
     'components' => [
         'user' => [
-            'class' => 'yii\web\User',
-            'identityClass' => 'common\models\User',
+            'class' => \yii\web\User::class,
+            'identityClass' => \common\models\User::class,
         ],
+        'mailer' => [
+            'messageClass' => \yii\symfonymailer\Message::class
+        ]
     ],
 ];
