@@ -6,7 +6,7 @@
 use backend\assets\AppAsset;
 use yii\bootstrap5\Html;
 
-AppAsset::register($this)->css = ['css/blank.css'];
+AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ AppAsset::register($this)->css = ['css/blank.css'];
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 blank">
 <?php $this->beginBody() ?>
 
 <main role="main">

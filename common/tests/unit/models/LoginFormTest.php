@@ -2,9 +2,9 @@
 
 namespace common\tests\unit\models;
 
-use Yii;
 use common\models\LoginForm;
 use common\fixtures\UserFixture;
+use Yii;
 
 /**
  * Login form test

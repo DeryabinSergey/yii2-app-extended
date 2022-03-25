@@ -17,7 +17,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => \common\models\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -29,7 +29,7 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
@@ -38,7 +38,7 @@ return [
             'errorAction' => 'site/error',
         ],
 	    'urlManagerFrontend' => [
-	    	'class' => 'yii\web\UrlManager',
+	    	'class' => \yii\web\UrlManager::class,
 		    'enablePrettyUrl' => true,
 		    'showScriptName' => false,
 		    'rules' => [

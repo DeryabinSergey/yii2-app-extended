@@ -3,6 +3,6 @@
 return [
     'bootstrap' => ['gii'],
     'modules' => [
-        'gii' => 'yii\gii\Module',
+        'gii' => \yii\gii\Module::class,
     ],
 ];

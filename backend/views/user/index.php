@@ -1,10 +1,10 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Url;
 use yii\bootstrap5\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use common\models\User;
 
 /* @var yii\web\View $this */
 /* @var backend\models\UserSearch $searchModel */
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'admin:boolean',
             [
-                'class' => 'common\flow\grid\ActionColumn',
+                'class' => \yii\grid\ActionColumn::class,
                 'buttons'=>[
                     'reset' => function ($url, $model) {
                         return

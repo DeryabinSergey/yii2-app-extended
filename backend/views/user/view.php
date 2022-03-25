@@ -1,8 +1,8 @@
 <?php
 
+use common\models\User;
 use yii\bootstrap5\Html;
 use yii\widgets\DetailView;
-use common\models\User;
 
 /* @var yii\web\View $this */
 /* @var common\models\User $model */
