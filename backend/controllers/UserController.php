@@ -2,14 +2,15 @@
 
 namespace backend\controllers;
 
-use Yii;
-use common\models\User;
+use backend\models\UserCreateForm;
 use backend\models\UserSearch;
+use backend\models\UserUpdateForm;
+use common\models\User;
+
+use Yii;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use backend\models\UserCreateForm;
-use backend\models\UserUpdateForm;
 
 /**
  * UserController implements the CRUD actions for User model.

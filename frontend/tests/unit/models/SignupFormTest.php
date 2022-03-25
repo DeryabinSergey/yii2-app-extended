@@ -30,8 +30,8 @@ class SignupFormTest extends \Codeception\Test\Unit
             'password' => 'some_password',
         ]);
 
-        $user = $model->signup();
-        expect($user)->true();
+        $model->signup();
+        verify($model)->notEmpty();
 
         $this->checkSignupEmail(
             /** @var \common\models\User $user */
@@ -51,7 +51,7 @@ class SignupFormTest extends \Codeception\Test\Unit
         ]);
 
         $user = $model->signup();
-        expect($user)->true();
+        verify($user)->true();
 
         $this->checkSignupEmail(
             /** @var \common\models\User $user */
@@ -66,14 +66,14 @@ class SignupFormTest extends \Codeception\Test\Unit
     public function testNotCorrectSignup()
     {
         $model = new SignupForm([
-            'email' => 'test2@mail.com',
-            'password' => 'Test1234',
+            'email' => 'brady.renner@rutherford.com',
+            'password' => 'some_password',
         ]);
 
-        expect_not($model->signup());
-        expect_that($model->getErrors('email'));
+        verify($model->signup())->false();
+        verify($model->getErrors('email'))->notEmpty();
 
-        expect($model->getFirstError('email'))
+        verify($model->getFirstError('email'))
             ->equals('This email address has already been taken.');
     }
 
@@ -83,10 +83,10 @@ class SignupFormTest extends \Codeception\Test\Unit
 
         $mail = $this->tester->grabLastSentEmail();
 
-        expect($mail)->isInstanceOf('yii\mail\MessageInterface');
-        expect($mail->getTo())->hasKey($user->email);
-        expect($mail->getFrom())->hasKey(\Yii::$app->params['supportEmail']);
-        expect($mail->getSubject())->equals('Account registration at ' . \Yii::$app->name);
-        expect($mail->toString())->stringContainsString($user->verification_token);
+        verify($mail)->instanceOf('yii\mail\MessageInterface');
+        verify($mail->getTo())->arrayHasKey($user->email);
+        verify($mail->getFrom())->arrayHasKey(\Yii::$app->params['supportEmail']);
+        verify($mail->getSubject())->equals('Account registration at ' . \Yii::$app->name);
+        verify($mail->toString())->stringContainsString($user->verification_token);
     }
 }

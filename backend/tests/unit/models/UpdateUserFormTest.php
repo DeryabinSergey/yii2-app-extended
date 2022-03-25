@@ -27,7 +27,7 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
     {
         $model = UserUpdateForm::findOne(4);
 
-        expect($model)->null();
+        verify($model)->null();
     }
 
     public function testUpdateBlankForm()
@@ -36,7 +36,7 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
             $this->tester->grabFixture('user', 0)->id
         );
 
-        expect($model)->isInstanceOf(User::class);
+        verify($model)->instanceOf(User::class);
 
         $model->attributes = [
             'username' => '',
@@ -44,13 +44,13 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
             'status' => ''
         ];
 
-        expect($model->save())->false();
-        expect_that($model->getErrors('username'));
-        expect($model->getFirstError('username'))->equals('Username cannot be blank.');
-        expect_that($model->getErrors('email'));
-        expect($model->getFirstError('email'))->equals('Email cannot be blank.');
-        expect_that($model->getErrors('status'));
-        expect($model->getFirstError('status'))->equals('Status cannot be blank.');
+        verify($model->save())->false();
+        verify($model->getErrors('username'))->notEmpty();
+        verify($model->getFirstError('username'))->equals('Username cannot be blank.');
+        verify($model->getErrors('email'))->notEmpty();
+        verify($model->getFirstError('email'))->equals('Email cannot be blank.');
+        verify($model->getErrors('status'))->notEmpty();
+        verify($model->getFirstError('status'))->equals('Status cannot be blank.');
     }
 
     public function testUpdateNotValidData()
@@ -59,18 +59,18 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
             $this->tester->grabFixture('user', 0)->id
         );
 
-        expect($model)->isInstanceOf(User::class);
+        verify($model)->instanceOf(User::class);
 
         $model->attributes = [
             'email' => 'mail#example.com',
             'status' => 999
         ];
 
-        expect($model->save())->false();
-        expect_that($model->getErrors('email'));
-        expect($model->getFirstError('email'))->equals('Email is not a valid email address.');
-        expect_that($model->getErrors('status'));
-        expect($model->getFirstError('status'))->equals('Status is invalid.');
+        verify($model->save())->false();
+        verify($model->getErrors('email'))->notEmpty();
+        verify($model->getFirstError('email'))->equals('Email is not a valid email address.');
+        verify($model->getErrors('status'));
+        verify($model->getFirstError('status'))->equals('Status is invalid.');
     }
 
     public function testUpdateDuplicateEmail()
@@ -79,30 +79,30 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
         $userTwoFixture = $this->tester->grabFixture('user', 1);
         $model = UserUpdateForm::findOne($userOneFixture->id);
 
-        expect($model)->isInstanceOf(User::class);
+        verify($model)->instanceOf(User::class);
 
         $model->attributes = [
             'email' => $userTwoFixture->email
         ];
 
-        expect($model->save())->false();
-        expect_that($model->getErrors('email'));
-        expect($model->getFirstError('email'))->equals('This email address has already been taken.');
+        verify($model->save())->false();
+        verify($model->getErrors('email'))->notEmpty();
+        verify($model->getFirstError('email'))->equals('This email address has already been taken.');
     }
 
     public function testUpdateUndeleteWithExistedUserDuplicateEmail()
     {
         $model = UserUpdateForm::findOne(3);
 
-        expect($model)->isInstanceOf(User::class);
+        verify($model)->instanceOf(User::class);
 
         $model->attributes = [
             'status' => User::STATUS_ACTIVE,
         ];
 
-        expect($model->save())->false();
-        expect_that($model->getErrors('email'));
-        expect($model->getFirstError('email'))->equals('Another user already registered with this email.');
+        verify($model->save())->false();
+        verify($model->getErrors('email'))->notEmpty();
+        verify($model->getFirstError('email'))->equals('Another user already registered with this email.');
     }
 
     public function testUpdateCorrectNotAdmin()
@@ -120,7 +120,7 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
         $userFixture = $this->tester->grabFixture('user', 0);
         $model = UserUpdateForm::findOne($userFixture->id);
 
-        expect($model)->isInstanceOf(User::class);
+        verify($model)->instanceOf(User::class);
 
         $model->attributes = [
             'username' => $username,
@@ -129,8 +129,8 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
             'admin' => $admin
         ];
 
-        expect($model->save())->true();
-        expect($model->getErrors())->isEmpty();
+        verify($model->save())->true();
+        verify($model->getErrors())->empty();
 
         /** @var \common\models\User $user */
         $user = $this->tester->grabRecord(User::class, [
@@ -140,10 +140,10 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
             'admin' => $admin
         ]);
 
-        expect($user)->isInstanceOf(User::class);
-        expect($user->auth_key)->equals($userFixture->auth_key);
-        expect($user->password_hash)->equals($userFixture->password_hash);
-        expect($user->password_reset_token)->equals($userFixture->password_reset_token);
-        expect($user->verification_token)->equals($userFixture->verification_token);
+        verify($user)->instanceOf(User::class);
+        verify($user->auth_key)->equals($userFixture->auth_key);
+        verify($user->password_hash)->equals($userFixture->password_hash);
+        verify($user->password_reset_token)->equals($userFixture->password_reset_token);
+        verify($user->verification_token)->equals($userFixture->verification_token);
     }
 }

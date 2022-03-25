@@ -31,9 +31,9 @@ class CreateUserFormTest extends \Codeception\Test\Unit
 			'email' => ''
 		]);
 
-		expect_not($model->create());
-		expect_that($model->getErrors('username'));
-		expect_that($model->getErrors('email'));
+		verify($model->create())->false();
+		verify($model->getErrors('username'))->notEmpty();
+		verify($model->getErrors('email'))->notEmpty();
 	}
 
 	public function testCreateNotValidEmail()
@@ -43,9 +43,9 @@ class CreateUserFormTest extends \Codeception\Test\Unit
 			'email' => 'mail#example.com'
 		]);
 
-		expect_not($model->create());
-		expect_not($model->getErrors('username'));
-		expect_that($model->getErrors('email'));
+        verify($model->create())->false();
+        verify($model->getErrors('username'))->empty();
+		verify($model->getErrors('email'))->notEmpty();
 	}
 
 	public function testCreateDuplicateEmail()
@@ -55,10 +55,10 @@ class CreateUserFormTest extends \Codeception\Test\Unit
 			'email' => 'nicole.paucek@schultz.info'
 		]);
 
-		expect_not($model->create());
-		expect_not($model->getErrors('username'));
-		expect_that($model->getErrors('email'));
-		expect($model->getFirstError('email'))->equals('This email address has already been taken.');
+        verify($model->create())->false();
+        verify($model->getErrors('username'))->empty();
+        verify($model->getErrors('email'))->notEmpty();
+		verify($model->getFirstError('email'))->equals('This email address has already been taken.');
 	}
 
     public function testCreateCorrectNotAdmin()
@@ -82,24 +82,24 @@ class CreateUserFormTest extends \Codeception\Test\Unit
 		}
 		$model = new TestUserCreateForm($credentials);
 
-		expect($model->create())->true();
+		verify($model->create())->true();
 
 		/** @var \common\models\User $user */
-		$user = $this->tester->grabRecord('common\models\User', [
+		$user = $this->tester->grabRecord(\common\models\User::class, [
 			'username' => $username,
 			'email' => $email,
 			'status' => \common\models\User::STATUS_ACTIVE,
 			'admin' => $admin
 		]);
 
-		expect($user)->isInstanceOf(User::class);
+		verify($user)->instanceOf(User::class);
 
 		$this->tester->seeEmailIsSent();
 		$mail = $this->tester->grabLastSentEmail();
-		expect($mail)->isInstanceOf(\yii\mail\MessageInterface::class);
-		expect($mail->getTo())->hasKey($email);
-		expect($mail->getFrom())->hasKey(\Yii::$app->params['supportEmail']);
-		expect($mail->getSubject())->equals('Account credentials at ' . \Yii::$app->name);
-		expect($mail->toString())->stringContainsString($model::$password);
+        verify($mail)->instanceOf(\yii\mail\MessageInterface::class);
+        verify($mail->getTo())->arrayHasKey($email);
+        verify($mail->getFrom())->arrayHasKey(\Yii::$app->params['supportEmail']);
+        verify($mail->getSubject())->equals('Account credentials at ' . \Yii::$app->name);
+        verify($mail->toString())->stringContainsString($model::$password);
 	}
 }

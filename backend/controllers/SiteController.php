@@ -2,10 +2,10 @@
 
 namespace backend\controllers;
 
-use Yii;
-
-use yii\helpers\ArrayHelper;
 use backend\models\LoginForm;
+
+use Yii;
+use yii\helpers\ArrayHelper;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 
