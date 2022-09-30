@@ -2,34 +2,42 @@
     "name": "deryabinsergey/yii2-app-extended",
     "description": "Yii 2 Extended Project Template",
     "keywords": ["yii2", "framework", "extended", "project template"],
-    "homepage": "http://www.yiiframework.com/",
+    "homepage": "https://www.yiiframework.com/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
         "issues": "https://github.com/DeryabinSergey/yii2-app-extended/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
+        "forum": "https://www.yiiframework.com/forum/",
+        "wiki": "https://www.yiiframework.com/wiki/",
         "source": "https://github.com/DeryabinSergey/yii2-app-extended"
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=8.0",
-        "yiisoft/yii2": "~2.0.45",
+        "php": "^8.1",
+        "yiisoft/yii2": "~2.0.46",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "yiisoft/yii2-bootstrap5": "~2.0.2",
         "rmrevin/yii2-fontawesome": "~3.7.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "~9.5.0",
         "yiisoft/yii2-debug": "~2.1.18",
         "yiisoft/yii2-gii": "~2.2.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "codeception/codeception": "^4.1",
-        "codeception/module-asserts": "^1.0",
-        "codeception/module-yii2": "^1.0",
-        "codeception/module-filesystem": "^1.0",
+        "codeception/codeception": "^5.0.0",
+        "codeception/lib-innerbrowser": "^3.0",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-yii2": "^1.1",
+        "codeception/module-filesystem": "^3.0",
         "codeception/verify": "^2.2",
-        "symfony/browser-kit": ">=2.7 <=4.2.4",
-        "codeception/module-webdriver": "^1.1"
+        "symfony/browser-kit": "^6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "common\\tests\\": ["common/tests/", "common/tests/_support"],
+            "backend\\tests\\": ["backend/tests/", "backend/tests/_support"],
+            "frontend\\tests\\": ["frontend/tests/", "frontend/tests/_support"]
+        }
     },
     "config": {
         "process-timeout": 1800,
