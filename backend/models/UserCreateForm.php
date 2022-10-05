@@ -1,9 +1,10 @@
 <?php
 namespace backend\models;
 
+use common\models\User;
+
 use Yii;
 use yii\base\Model;
-use common\models\User;
 
 /**
  * Create User form from admin
@@ -13,13 +14,17 @@ class UserCreateForm extends Model
 	public $id;
 	public $username;
     public $email;
-    public $admin = 0;
-
+	/**
+	 * Assigned roles to User
+	 *
+	 * @var string[]|string
+	 */
+	public array|string $role = [];
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
 	        ['username', 'trim'],
@@ -32,35 +37,72 @@ class UserCreateForm extends Model
 
 	        [['username', 'email'], 'required'],
 
-	        ['admin', 'boolean'],
+	        ['role', 'each', 'rule' => ['in', 'range' => array_keys(\Yii::$app->authManager->getRoles())]],
         ];
     }
 
-    /**
-     * Create new user
-     *
-     * @return bool whether the creating new account was successful and email was sent
-     */
-    public function create()
+	/**
+	 * {@inheritdoc}
+	 */
+	public function afterValidate(): void
+	{
+		parent::afterValidate();
+
+		$user = \Yii::$app->user;
+		$errorToAdd = array_filter(
+			$this->role ?: [],
+			fn(string $role): bool => !$user->can($role)
+		);
+
+		if (!empty($errorToAdd)) {
+			$this->addError('role', 'You can`t assign role: ' . implode(', ', $errorToAdd));
+		}
+	}
+
+	/**
+	 * Create new user
+	 *
+	 * @return bool whether the creating new account was successful and email was sent
+	 * @throws \yii\base\Exception
+	 */
+    public function create(): bool
     {
         if (!$this->validate()) {
             return false;
         }
-        
-        $user = new User();
-        $password = Yii::$app->security->generateRandomString(Yii::$app->params['user.passwordMinLength']);
-	    $user->username = $this->username;
-        $user->email = $this->email;
-        $user->status = User::STATUS_ACTIVE;
-        $user->admin = $this->admin;
-        $user->setPassword($password);
-        $user->generateAuthKey();
-        if ($user->save()) {
-        	$this->id = $user->id;
-	        return static::sendEmail($user, $password);
-        }
 
-        return false;
+	    $auth = \Yii::$app->authManager;
+	    $user = new User();
+	    $password = Yii::$app->security->generateRandomString(Yii::$app->params['user.passwordMinLength']);
+	    $user->username = $this->username;
+	    $user->email = $this->email;
+	    $user->status = User::STATUS_ACTIVE;
+	    $user->setPassword($password);
+	    $user->generateAuthKey();
+
+	    $transaction = $user::getDb()->beginTransaction();
+
+	    try {
+		    if ($user->save() === false) {
+			    $transaction->rollBack();
+
+			    return false;
+		    }
+
+		    $this->id = $user->id;
+		    foreach(($this->role ?: []) as $roleName) {
+			    $auth->assign($auth->getRole($roleName), $this->id);
+		    }
+			$transaction->commit();
+
+		    return static::sendEmail($user, $password);
+	    } catch (\Throwable $e) {
+			if ($transaction->getIsActive()) {
+				$transaction->rollBack();
+			}
+
+		    throw $e;
+	    }
     }
 
     /**
@@ -69,7 +111,7 @@ class UserCreateForm extends Model
      * @param string $password generated user password
      * @return bool whether the email was sent
      */
-    public static function sendEmail($user, $password): bool
+    public static function sendEmail(User $user, string $password): bool
     {
         return Yii::$app
             ->mailer

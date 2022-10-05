@@ -115,7 +115,7 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
         $this->testUpdateCorrect('test.user','some_email@example.com', User::STATUS_INACTIVE, true);
     }
 
-    protected function testUpdateCorrect($username, $email, $status, $admin = false)
+    protected function testUpdateCorrect($username, $email, $status)
     {
         $userFixture = $this->tester->grabFixture('user', 0);
         $model = UserUpdateForm::findOne($userFixture->id);
@@ -125,8 +125,7 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
         $model->attributes = [
             'username' => $username,
             'email' => $email,
-            'status' => $status,
-            'admin' => $admin
+            'status' => $status
         ];
 
         verify($model->save())->true();
@@ -136,8 +135,7 @@ class UpdateUserFormTest extends \Codeception\Test\Unit
         $user = $this->tester->grabRecord(User::class, [
             'username' => $username,
             'email' => $email,
-            'status' => $status,
-            'admin' => $admin
+            'status' => $status
         ]);
 
         verify($user)->instanceOf(User::class);

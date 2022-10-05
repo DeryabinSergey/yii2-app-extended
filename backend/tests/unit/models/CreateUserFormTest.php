@@ -88,8 +88,7 @@ class CreateUserFormTest extends \Codeception\Test\Unit
 		$user = $this->tester->grabRecord(\common\models\User::class, [
 			'username' => $username,
 			'email' => $email,
-			'status' => \common\models\User::STATUS_ACTIVE,
-			'admin' => $admin
+			'status' => \common\models\User::STATUS_ACTIVE
 		]);
 
 		verify($user)->instanceOf(User::class);

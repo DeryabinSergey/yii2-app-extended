@@ -11,6 +11,8 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 
 AppAsset::register($this);
+
+$user = \Yii::$app->user;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -46,10 +48,13 @@ AppAsset::register($this);
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky pt-3">
                 <?php
-                    $menuItems = [
-	                    ['label' => FAS::i('home') . ' Dashboard', 'url' => ['/site/index'], 'encode' => false],
-	                    ['label' => FAS::i('users') . ' Users', 'url' => ['/user/index'], 'encode' => false],
-                    ];
+                    $menuItems = [];
+                    if ($user->can(PERMISSION_BACKEND)) {
+                        $menuItems[] = ['label' => FAS::i('home') . ' Dashboard', 'url' => ['/site/index'], 'encode' => false];
+                    }
+                    if ($user->can(PERMISSION_USER_READ)) {
+	                    $menuItems[] = ['label' => FAS::i('users') . ' Users', 'url' => ['/user/index'], 'encode' => false];
+                    }
 	                $menuItems[] = '<li class="nav-item">'
 		                . Html::beginForm(['/site/logout'], 'post')
 		                . Html::submitButton(FAS::i('sign-out-alt') . ' Logout (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-sm btn-link d-md-none nav-link'])

@@ -2,32 +2,34 @@
 
 namespace backend\models;
 
+use common\models\User;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\User;
 
 /**
  * UserSearch represents the model behind the search form of `common\models\User`.
  */
 class UserSearch extends User
 {
+	public ?string $role = null;
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            [['id', 'status', 'admin'], 'integer'],
-	        [['username', 'email'], 'string'],
+            [['id', 'status'], 'integer'],
+	        [['username', 'email', 'role'], 'string'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
@@ -35,10 +37,9 @@ class UserSearch extends User
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         $query = User::find();
 
@@ -59,8 +60,17 @@ class UserSearch extends User
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'admin' => $this->admin,
         ]);
+
+		if (!empty($this->role)) {
+			$userIdsByRole = \Yii::$app->authManager->getUserIdsByRole($this->role);
+
+			if (empty($userIdsByRole)) {
+				$query->where('0 = 1');
+			} else {
+				$query->andFilterWhere(['id' => $userIdsByRole]);
+			}
+		}
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email]);

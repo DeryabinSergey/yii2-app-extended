@@ -20,7 +20,14 @@ return [
         'fixture' => [
             'class' => \yii\console\controllers\FixtureController::class,
             'namespace' => 'common\fixtures',
-          ],
+        ],
+	    'migrate' => [
+			'class' => \yii\console\controllers\MigrateController::class,
+		    'migrationPath' => [
+				'@console/migrations',
+			    '@yii/rbac/migrations'
+		    ],
+	    ],
     ],
     'components' => [
         'log' => [
