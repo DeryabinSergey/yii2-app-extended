@@ -2,7 +2,6 @@
 
 namespace frontend\tests\unit\models;
 
-use common\fixtures\UserFixture;
 use frontend\models\ResetPasswordForm;
 
 class ResetPasswordFormTest extends \Codeception\Test\Unit
@@ -17,7 +16,7 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
     {
         $this->tester->haveFixtures([
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => \common\fixtures\UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php'
             ],
         ]);
@@ -37,8 +36,9 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
     public function testResetCorrectToken()
     {
         $user = $this->tester->grabFixture('user', 0);
-        $form = new ResetPasswordForm($user['password_reset_token']);
-        verify($form->resetPassword())->notEmpty();
+        $form = new ResetPasswordForm($user->password_reset_token, ['password' => 'hTq_KbxYZXji4eGp']);
+	    //error_log($form->resetPassword());
+		//error_log(print_r($form->getErrors(), true));
+        verify($form->resetPassword())->true();
     }
-
 }

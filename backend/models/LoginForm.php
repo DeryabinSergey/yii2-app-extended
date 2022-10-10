@@ -9,6 +9,7 @@ use Yii;
  */
 class LoginForm extends \common\models\LoginForm
 {
+	public string $errorMessageNotAdmin = 'Login for admin only, sorry bro';
 	/**
 	 * Validates the password.
 	 * This method serves as the inline validation for password.
@@ -25,7 +26,21 @@ class LoginForm extends \common\models\LoginForm
 			&& $this->getUser() !== null
 			&& Yii::$app->authManager->checkAccess($this->getUser()->id, PERMISSION_BACKEND) === false
 		) {
-			$this->addError($attribute, 'Login for admin only, sorry bro');
+			$this->addError($attribute, $this->errorMessageNotAdmin);
 		}
+	}
+
+	/**
+	 * Finds user by [[username]]
+	 *
+	 * @return User|null
+	 */
+	protected function getUser(): ?User
+	{
+		if ($this->_user === null) {
+			$this->_user = User::findByEmail($this->email);
+		}
+
+		return $this->_user;
 	}
 }

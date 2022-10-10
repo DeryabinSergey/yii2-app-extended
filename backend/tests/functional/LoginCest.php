@@ -4,6 +4,7 @@ namespace backend\tests\functional;
 
 use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
+use common\fixtures\UserRoleFixture;
 
 /**
  * Class LoginCest
@@ -20,10 +21,14 @@ class LoginCest
     public function _fixtures()
     {
         return [
-            'user' => [
+            [
                 'class' => UserFixture::class,
-                'dataFile' => codecept_data_dir() . 'login_data.php'
-            ]
+                'dataFile' => codecept_data_dir() . 'user.php'
+            ],
+	        [
+				'class' => UserRoleFixture::class,
+		        'dataFile' => codecept_data_dir() . 'user_role.php'
+	        ]
         ];
     }
 
@@ -49,13 +54,13 @@ class LoginCest
 
 	public function checkWrongPassword(FunctionalTester $I)
 	{
-		$I->submitForm('#login-form', $this->formParams('admin@example.com', 'wrong'));
+		$I->submitForm('#login-form', $this->formParams('nicole.paucek@schultz.info', 'wrong'));
 		$I->seeValidationError('Incorrect username or password.');
 	}
 
 	public function checkInactiveAccount(FunctionalTester $I)
 	{
-		$I->submitForm('#login-form', $this->formParams('test@mail.com', 'Test1234'));
+		$I->submitForm('#login-form', $this->formParams('kaden57@gmail.com', '3ZJoptEV'));
 		$I->seeValidationError('Incorrect username or password');
 	}
     
@@ -64,9 +69,9 @@ class LoginCest
      */
     public function loginUser(FunctionalTester $I)
     {
-	    $I->submitForm('#login-form', $this->formParams('sfriesen@jenkins.info', 'password_0'));
+	    $I->submitForm('#login-form', $this->formParams('nicole.paucek@schultz.info', 'password_0'));
 
-        $I->see('Logout (erau)', 'form button[type=submit]');
+        $I->see('Logout (bayer.hudson)', 'form button[type=submit]');
         $I->dontSeeLink('Login');
     }
 
@@ -75,7 +80,7 @@ class LoginCest
 	 */
 	public function denyNotAdminUser(FunctionalTester $I)
 	{
-		$I->submitForm('#login-form', $this->formParams('sfriesen2@jenkins.info', 'password_0'));
+		$I->submitForm('#login-form', $this->formParams('dovie.gulgowski@swift.biz', 'Xk4_zCzs'));
 
 		$I->see('Login for admin only, sorry bro', 'form div.invalid-feedback');
 		$I->see('Login', 'form button[type=submit]');

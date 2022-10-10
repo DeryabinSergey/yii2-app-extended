@@ -3,9 +3,11 @@
 namespace backend\controllers;
 
 use backend\models\UserCreateForm;
+use backend\models\UserResetForm;
 use backend\models\UserSearch;
 use backend\models\UserUpdateForm;
-use common\models\User;
+use backend\models\User;
+use common\models\UserRole;
 
 use Yii;
 use yii\filters\AccessControl;
@@ -94,16 +96,21 @@ class UserController extends BackendController
 	/**
 	 * Creates a new User model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 * @return mixed
+	 * @return Response|string
 	 * @throws \yii\base\Exception
 	 */
     public function actionCreate(): Response|string
     {
         $model = new UserCreateForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+		if (Yii::$app->request->isPost) {
+			$model->setAvailableRole(
+				array_keys((new UserRole(['userId' => Yii::$app->user->id]))->getRoles())
+			);
+			if ($model->load(Yii::$app->request->post()) && $model->create()) {
+				return $this->redirect(['view', 'id' => $model->id]);
+			}
+		}
 
         return $this->render('create', [
             'model' => $model,
@@ -122,9 +129,14 @@ class UserController extends BackendController
     {
         $model = $this->findModel($id, UserUpdateForm::class);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+	    if (Yii::$app->request->isPost) {
+		    $model->setAvailableRole(
+			    array_keys((new UserRole(['userId' => Yii::$app->user->id]))->getRoles())
+		    );
+		    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			    return $this->redirect(['view', 'id' => $model->id]);
+		    }
+	    }
 
         return $this->render('update', [
             'model' => $model,
@@ -141,12 +153,8 @@ class UserController extends BackendController
 	 */
     public function actionReset(int $id): Response|string
     {
-    	$user = $this->findModel($id);
-
-	    $password = Yii::$app->security->generateRandomString(Yii::$app->params['user.passwordMinLength']);
-	    $user->setPassword($password);
-	    $user->password_reset_token = null;
-	    if ($user->save() && UserCreateForm::sendEmail($user, $password)) {
+		$model = new UserResetForm($this->findModel($id));
+	    if ($model->resetPassword()) {
 		    Yii::$app->session->addFlash('success', 'Password was changed and email to user');
 	    } else {
 		    Yii::$app->session->addFlash('danger', 'Error while change password and email it to user');

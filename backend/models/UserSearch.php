@@ -2,8 +2,6 @@
 
 namespace backend\models;
 
-use common\models\User;
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -41,7 +39,7 @@ class UserSearch extends User
      */
     public function search(array $params): ActiveDataProvider
     {
-        $query = User::find();
+        $query = self::find();
 
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([

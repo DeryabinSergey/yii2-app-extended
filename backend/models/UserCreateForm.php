@@ -1,15 +1,12 @@
 <?php
 namespace backend\models;
 
-use common\models\User;
-
 use Yii;
-use yii\base\Model;
 
 /**
  * Create User form from admin
  */
-class UserCreateForm extends Model
+class UserCreateForm extends BaseUserForm
 {
 	public $id;
 	public $username;
@@ -20,6 +17,12 @@ class UserCreateForm extends Model
 	 * @var string[]|string
 	 */
 	public array|string $role = [];
+
+	/**
+	 * List of roles, available for assign
+	 * @var string[]
+	 */
+	protected array $availableRole = [];
 
     /**
      * {@inheritdoc}
@@ -37,26 +40,17 @@ class UserCreateForm extends Model
 
 	        [['username', 'email'], 'required'],
 
-	        ['role', 'each', 'rule' => ['in', 'range' => array_keys(\Yii::$app->authManager->getRoles())]],
+	        ['role', 'each', 'rule' => ['in', 'range' => $this->availableRole, 'message' => 'You can`t assign role {value}']],
         ];
     }
 
 	/**
-	 * {@inheritdoc}
+	 * @param string[] $role
+	 * @return void
 	 */
-	public function afterValidate(): void
+	public function setAvailableRole(array $role = []): void
 	{
-		parent::afterValidate();
-
-		$user = \Yii::$app->user;
-		$errorToAdd = array_filter(
-			$this->role ?: [],
-			fn(string $role): bool => !$user->can($role)
-		);
-
-		if (!empty($errorToAdd)) {
-			$this->addError('role', 'You can`t assign role: ' . implode(', ', $errorToAdd));
-		}
+		$this->availableRole = $role;
 	}
 
 	/**
@@ -71,7 +65,12 @@ class UserCreateForm extends Model
             return false;
         }
 
-	    $auth = \Yii::$app->authManager;
+	    $auth = Yii::$app->authManager;
+		$roleList = array_map(
+			fn(string $roleName): \yii\rbac\Role => $auth->getRole($roleName),
+			$this->role ?: []
+		);
+
 	    $user = new User();
 	    $password = Yii::$app->security->generateRandomString(Yii::$app->params['user.passwordMinLength']);
 	    $user->username = $this->username;
@@ -81,7 +80,6 @@ class UserCreateForm extends Model
 	    $user->generateAuthKey();
 
 	    $transaction = $user::getDb()->beginTransaction();
-
 	    try {
 		    if ($user->save() === false) {
 			    $transaction->rollBack();
@@ -90,8 +88,8 @@ class UserCreateForm extends Model
 		    }
 
 		    $this->id = $user->id;
-		    foreach(($this->role ?: []) as $roleName) {
-			    $auth->assign($auth->getRole($roleName), $this->id);
+		    foreach($roleList as $role) {
+			    $auth->assign($role, $this->id);
 		    }
 			$transaction->commit();
 
@@ -103,25 +101,5 @@ class UserCreateForm extends Model
 
 		    throw $e;
 	    }
-    }
-
-    /**
-     * Sends email to user with credentials
-     * @param User $user user model to with email should be send
-     * @param string $password generated user password
-     * @return bool whether the email was sent
-     */
-    public static function sendEmail(User $user, string $password): bool
-    {
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'emailNotify-html', 'text' => 'emailNotify-text'],
-                ['user' => $user, 'password' => $password]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($user->email)
-            ->setSubject('Account credentials at ' . Yii::$app->name)
-            ->send();
     }
 }
