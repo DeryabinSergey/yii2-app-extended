@@ -3,11 +3,6 @@
 /* @var yii\web\View $this */
 
 $this->title = 'My Yii Application';
-$faker = \Faker\Factory::create();
-$user = new \common\models\User();
-$user->generateAuthKey();
-$password = Yii::$app->security->generateRandomString(8);
-$user->setPassword($password);
 ?>
 <div class="site-index">
 
@@ -17,17 +12,6 @@ $user->setPassword($password);
         <p class="lead">You have successfully created your Yii-powered application.</p>
 
         <p class="text-center"><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-
-<pre><code>
-    'username' => '<?= $faker->userName ?>',<br />
-    'auth_key' => '<?= $user->auth_key ?>',<br />
-    // <?= $password ?><br />
-    'password_hash' => '<?= $user->password_hash ?>',<br />
-    'created_at' => '<?= time() ?>',<br />
-    'updated_at' => '<?= time() ?>',<br />
-    'status' => 10,<br />
-    'email' => '<?= $faker->email ?>',<br />
-</code></pre>
     </div>
 
     <div class="body-content">
