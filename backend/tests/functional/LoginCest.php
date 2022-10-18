@@ -6,9 +6,6 @@ use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
 use common\fixtures\UserRoleFixture;
 
-/**
- * Class LoginCest
- */
 class LoginCest
 {
     /**

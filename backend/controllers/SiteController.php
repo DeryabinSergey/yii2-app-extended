@@ -16,7 +16,7 @@ use yii\web\Response;
 class SiteController extends BackendController
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function behaviors(): array
     {

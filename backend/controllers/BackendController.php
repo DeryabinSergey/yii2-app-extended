@@ -11,7 +11,7 @@ namespace backend\controllers;
 abstract class BackendController extends \yii\web\Controller
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritdoc
 	 */
 	public function actions(): array
 	{

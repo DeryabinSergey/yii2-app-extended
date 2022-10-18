@@ -61,5 +61,25 @@ return [
 		'updated_at' => '1665265097',
 		'status' => \backend\models\User::STATUS_ACTIVE,
 		'email' => 'emmerich.brionna@waelchi.com',
-	]
+	],
+	[
+		'username' => 'auer.manley',
+		'auth_key' => '_bjUflngc8IIj9lh2HAf-jFuNrxSUI9S',
+		// a9yBknGE
+		'password_hash' => '$2y$13$YWOfCprUdUnKS2MAexAJquKmuOqUqjJVulx/mJGWZjw8X9jW/HDWO',
+		'created_at' => '1666053769',
+		'updated_at' => '1666053769',
+		'status' => \backend\models\User::STATUS_ACTIVE,
+		'email' => 'billy.cronin@wintheiser.org',
+	],
+	[
+		'username' => 'legros.jonathan',
+		'auth_key' => 'K4YVzXKFvuA-9mMIvWUWWS7SHK0wjuYC',
+		// WEdr0qEB
+		'password_hash' => '$2y$13$tqpMZo21UZmKipqgsCk5/.P11zlBYjEMWMKLfeqfg0yRiAj.J9/HS',
+		'created_at' => '1666053817',
+		'updated_at' => '1666053817',
+		'status' => \backend\models\User::STATUS_ACTIVE,
+		'email' => 'pturcotte@schaefer.com',
+	],
 ];
