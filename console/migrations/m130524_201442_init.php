@@ -24,7 +24,6 @@ class m130524_201442_init extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
 
-	        'admin' => $this->boolean()->notNull()->defaultValue(false),
 	        'verification_token' => $this->string()->defaultValue(null)
         ], $tableOptions);
 

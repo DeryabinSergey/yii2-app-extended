@@ -1,0 +1,10 @@
+suite_namespace: backend\tests\acceptance
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: 'http://backend/index-test.php'
+            browser: firefox
+        - Yii2:
+            part: [init, orm, fixtures]
+            transaction: false

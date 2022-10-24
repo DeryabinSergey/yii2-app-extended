@@ -2,17 +2,14 @@
 
 namespace frontend\models;
 
-use common\models\User;
 use Yii;
-use yii\base\Model;
 
 /**
  * Password reset request form
  */
-class PasswordResetRequestForm extends Model
+class PasswordResetRequestForm extends \yii\base\Model
 {
     public $email;
-
 
     /**
      * {@inheritdoc}
@@ -48,7 +45,10 @@ class PasswordResetRequestForm extends Model
             return false;
         }
         
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+        if (
+			empty($user->password_reset_token)
+			|| !User::isPasswordResetTokenValid($user->password_reset_token)
+        ) {
             $user->generatePasswordResetToken();
             if (!$user->save()) {
                 return false;

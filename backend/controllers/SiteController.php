@@ -5,10 +5,10 @@ namespace backend\controllers;
 use backend\models\LoginForm;
 
 use Yii;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-
 
 /**
  * Site controller
@@ -16,26 +16,32 @@ use yii\web\Response;
 class SiteController extends BackendController
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
 	    return
 		    ArrayHelper::merge(
 			    [
-		            'access' => [
-		                'rules' => [
-		                    [
-		                        'actions' => ['login', 'error'],
-		                        'allow' => true,
-		                    ],
-		                    [
-		                        'actions' => ['logout'],
-		                        'allow' => true,
-		                        'roles' => ['@'],
-		                    ]
-		                ],
-		            ],
+				    'access' => [
+					    'class' => AccessControl::class,
+					    'rules' => [
+						    [
+							    'actions' => ['login', 'error'],
+							    'allow' => true,
+						    ],
+						    [
+							    'actions' => ['logout'],
+							    'allow' => true,
+							    'roles' => ['@'],
+						    ],
+						    [
+								'actions' => ['index'],
+							    'allow' => true,
+							    'permissions' => [PERMISSION_BACKEND],
+						    ]
+					    ],
+				    ],
 		            'verbs' => [
 		                'class' => VerbFilter::class,
 		                'actions' => [
@@ -47,12 +53,12 @@ class SiteController extends BackendController
 		    );
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
+	/**
+	 * Displays homepage.
+	 *
+	 * @return Response|string
+	 */
+    public function actionIndex(): Response|string
     {
         return $this->render('index');
     }
@@ -60,9 +66,9 @@ class SiteController extends BackendController
     /**
      * Login action.
      *
-     * @return string|Response
+     * @return Response|string
      */
-    public function actionLogin()
+    public function actionLogin(): Response|string
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -82,12 +88,12 @@ class SiteController extends BackendController
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
+	/**
+	 * Logout action.
+	 *
+	 * @return Response|string
+	 */
+    public function actionLogout(): Response|string
     {
         Yii::$app->user->logout();
 

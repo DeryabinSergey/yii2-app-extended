@@ -3,9 +3,7 @@ actor: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: http://frontend/
-            host: 'selenium'
-            port: 4444
+            url: 'http://frontend/index-test.php'
             browser: firefox
         - Yii2:
             part: init
