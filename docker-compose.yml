@@ -5,7 +5,7 @@ services:
   frontend:
     build: frontend
     ports:
-      - 20080:80
+      - "20080:80"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
@@ -15,7 +15,7 @@ services:
   backend:
     build: backend
     ports:
-      - 21080:80
+      - "21080:80"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
@@ -25,15 +25,101 @@ services:
   mysql:
     image: mysql:5.7
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=verysecret
       - MYSQL_DATABASE=yii2advanced
       - MYSQL_USER=yii2advanced
       - MYSQL_PASSWORD=secret
 
-  #selenium:
-  #  image: selenium/standalone-firefox:4
+  #selenium-event-bus:
+  #  image: selenium/event-bus:4.5
+  #  container_name: selenium-event-bus
+  #  ports:
+  #    - "4442:4442"
+  #    - "4443:4443"
+  #    - "5557:5557"
+
+  #selenium-sessions:
+  #  image: selenium/sessions:4.5
+  #  container_name: selenium-sessions
+  #  ports:
+  #    - "5556:5556"
+  #  depends_on:
+  #    - selenium-event-bus
+  #  environment:
+  #    - SE_EVENT_BUS_HOST=selenium-event-bus
+  #    - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  #selenium-session-queue:
+  #  image: selenium/session-queue:4.5
+  #  container_name: selenium-session-queue
+  #  ports:
+  #    - "5559:5559"
+  #  depends_on:
+  #    - selenium-event-bus
+  #  environment:
+  #    - SE_EVENT_BUS_HOST=selenium-event-bus
+  #    - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  #selenium-distributor:
+  #  image: selenium/distributor:4.5
+  #  container_name: selenium-distributor
+  #  ports:
+  #    - "5553:5553"
+  #  depends_on:
+  #    - selenium-event-bus
+  #    - selenium-sessions
+  #    - selenium-session-queue
+  #  environment:
+  #    - SE_EVENT_BUS_HOST=selenium-event-bus
+  #    - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  #    - SE_SESSIONS_MAP_HOST=selenium-sessions
+  #    - SE_SESSIONS_MAP_PORT=5556
+  #    - SE_SESSION_QUEUE_HOST=selenium-session-queue
+  #    - SE_SESSION_QUEUE_PORT=5559
+
+  #selenium-router:
+  #  image: selenium/router:4.5
+  #  container_name: selenium-router
+  #  ports:
+  #    - "4444:4444"
+  #  depends_on:
+  #    - selenium-distributor
+  #    - selenium-sessions
+  #    - selenium-session-queue
+  #  environment:
+  #    - SE_DISTRIBUTOR_HOST=selenium-distributor
+  #    - SE_DISTRIBUTOR_PORT=5553
+  #    - SE_SESSIONS_MAP_HOST=selenium-sessions
+  #    - SE_SESSIONS_MAP_PORT=5556
+  #    - SE_SESSION_QUEUE_HOST=selenium-session-queue
+  #    - SE_SESSION_QUEUE_PORT=5559
+
+  #chrome:
+  #  image: selenium/node-chrome:4.5
+  #  volumes:
+  #    - /dev/shm:/dev/shm
+  #  depends_on:
+  #    - selenium-event-bus
+  #  environment:
+  #    - SE_EVENT_BUS_HOST=selenium-event-bus
+  #    - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  #firefox:
+  #  image: selenium/node-firefox:4.5
+  #  volumes:
+  #    - /dev/shm:/dev/shm
+  #  depends_on:
+  #    - selenium-event-bus
+  #  environment:
+  #    - SE_EVENT_BUS_HOST=selenium-event-bus
+  #    - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
 
   #pgsql:
   #  image: postgres:9.5
